@@ -353,61 +353,61 @@
             <button id="clearBtn">Очистить данные</button>
             <div id="result" class="result hidden">
                 <h2>Текущая аналитика:</h2>
-                <p>A: <span id="avgA"></span> | B: <span id="avgB"></span> (средние)</p>
-                <p>Текущая разница: <span id="currentDifference"></span></p>
-                <p><strong>Динамика:</strong> <span id="trendAnalysis"></span></p>
-                <p>1-е сближение: <span id="firstIntersectionPoint"></span></p>
-                <p><strong>Прогноз волн (от текущей):</strong> <span id="wavePrediction"></span></p>
-                <p><strong>Лидер (по анализу):</strong> <span id="potentialLeader"></span></p>
+                <p>A: <span id="avgA\"></span> | B: <span id="avgB\"></span> (средние)</p>
+                <p>Текущая разница: <span id="currentDifference\"></span></p>
+                <p><strong>Динамика:</strong> <span id="trendAnalysis\"></span></p>
+                <p>1-е сближение: <span id="firstIntersectionPoint\"></span></p>
+                <p><strong>Прогноз волн (от текущей):</strong> <span id="wavePrediction\"></span></p>
+                <p><strong>Лидер (по анализу):</strong> <span id="potentialLeader\"></span></p>
             </div>
-            <canvas id="chart"></canvas>
+            <canvas id="chart\"></canvas>
         </main>
     </div>
 
-    <div id="custom-keyboard">
-        <button data-key="1">1</button>
-        <button data-key="2">2</button>
-        <button data-key="3">3</button>
-        <button data-key="4">4</button>
-        <button data-key="5">5</button>
-        <button data-key="6">6</button>
-        <button data-key="7">7</button>
-        <button data-key="8">8</button>
-        <button data-key="9">9</button>
-        <button data-key=".">.</button> <button data-key="0">0</button>
-        <button data-key="delete" class="delete-key">⌫</button>
+    <div id="custom-keyboard\">
+        <button data-key=\"1\">1</button>
+        <button data-key=\"2\">2</button>
+        <button data-key=\"3\">3</button>
+        <button data-key=\"4\">4</button>
+        <button data-key=\"5\">5</button>
+        <button data-key=\"6\">6</button>
+        <button data-key=\"7\">7</button>
+        <button data-key=\"8\">8</button>
+        <button data-key=\"9\">9</button>
+        <button data-key=\".\">.</button> <button data-key=\"0\">0</button>
+        <button data-key=\"delete\" class=\"delete-key\">⌫</button>
     </div>
 
     <script>
-        // ВНИМАНИЕ: Chart.js будет загружен по сети, если не удалось "встроить" его.
+        // ВНИМАНИЕ: Chart.js будет загружен по сети, если не удалось \"встроить\" его.
         // Это самое надежное решение для iPad.
         
-        document.addEventListener("DOMContentLoaded", () => {
+        document.addEventListener(\"DOMContentLoaded\", () => {
             const gameCount = 8; 
-            const clearBtn = document.getElementById("clearBtn");
-            const resultDiv = document.getElementById("result");
-            const avgASpan = document.getElementById("avgA");
-            const avgBSpan = document.getElementById("avgB");
-            const currentDifferenceSpan = document.getElementById("currentDifference");
-            const trendAnalysisSpan = document.getElementById("trendAnalysis");
-            const firstIntersectionPointSpan = document.getElementById("firstIntersectionPoint");
-            const wavePredictionSpan = document.getElementById("wavePrediction");
-            const potentialLeaderSpan = document.getElementById("potentialLeader");
+            const clearBtn = document.getElementById(\"clearBtn\");
+            const resultDiv = document.getElementById(\"result\");
+            const avgASpan = document.getElementById(\"avgA\");
+            const avgBSpan = document.getElementById(\"avgB\");
+            const currentDifferenceSpan = document.getElementById(\"currentDifference\");
+            const trendAnalysisSpan = document.getElementById(\"trendAnalysis\");
+            const firstIntersectionPointSpan = document.getElementById(\"firstIntersectionPoint\");
+            const wavePredictionSpan = document.getElementById(\"wavePrediction\");
+            const potentialLeaderSpan = document.getElementById(\"potentialLeader\");
             
-            const chartCanvas = document.getElementById("chart");
+            const chartCanvas = document.getElementById(\"chart\");
             let chartInstance = null; 
 
-            const customKeyboard = document.getElementById("custom-keyboard");
-            const keyboardButtons = customKeyboard.querySelectorAll("button");
+            const customKeyboard = document.getElementById(\"custom-keyboard\");
+            const keyboardButtons = customKeyboard.querySelectorAll(\"button\");
 
             let activeInput = null; 
 
-            const inputs = document.querySelectorAll("input[type='text']");
+            const inputs = document.querySelectorAll(\"input[type='text']\");
             const lastInput = inputs[inputs.length - 1]; 
 
             const hideKeyboard = () => {
-                customKeyboard.classList.remove("visible");
-                document.body.classList.remove("keyboard-active");
+                customKeyboard.classList.remove(\"visible\");
+                document.body.classList.remove(\"keyboard-active\");
                 if (activeInput) {
                     activeInput.blur(); 
                 }
@@ -426,22 +426,22 @@
 
                     const formatValue = (str) => {
                         if (!str) return NaN;
-                        if (str.includes(',')) {
-                            const parts = str.split(',');
+                        if (str.includes(\',\')) {
+                            const parts = str.split(\',\');
                             if (parts[1].length === 0) {
-                                str = parts[0] + ',00';
+                                str = parts[0] + \',00\';
                             } else if (parts[1].length === 1) {
-                                str = parts[0] + ',' + parts[1] + '0';
+                                str = parts[0] + \',\' + parts[1] + \'0\';
                             } else if (parts[1].length > 2) { 
-                                str = parts[0] + ',' + parts[1].substring(0,2);
+                                str = parts[0] + \',\' + parts[1].substring(0,2);\n
                             } else { 
-                                str = str + ',00';
+                                str = str + \',00\';
                             }
                         }
                          else { 
-                            str = str + ',00';
+                            str = str + \',00\';
                         }
-                        return parseFloat(str.replace(/,/g, "."));
+                        return parseFloat(str.replace(/,/g, \".\"));
                     };
                     
                     valuesA.push(formatValue(valueStrA));
@@ -474,7 +474,7 @@
                 }
 
                 if (filledGamesCount === 0) {
-                    resultDiv.classList.add("hidden");
+                    resultDiv.classList.add(\"hidden\");
                     if (chartInstance) {
                         chartInstance.data.labels = [];
                         chartInstance.data.datasets = [];
@@ -489,28 +489,28 @@
                 avgASpan.textContent = avgA;
                 avgBSpan.textContent = avgB;
 
-                let currentDiff = 'Нет';
+                let currentDiff = \'Нет\';
                 if (!isNaN(valuesA[filledGamesCount - 1]) && !isNaN(valuesB[filledGamesCount - 1])) {
                     currentDiff = (valuesA[filledGamesCount - 1] - valuesB[filledGamesCount - 1]).toFixed(2);
                 }
                 currentDifferenceSpan.textContent = currentDiff;
 
-                let trend = 'Нет данных';
+                let trend = \'Нет данных\';
                 if (filledGamesCount >= 2) {
                     const lastA = valuesA[filledGamesCount - 1];
                     const secondLastA = valuesA[filledGamesCount - 2];
                     const lastB = valuesB[filledGamesCount - 1];
                     const secondLastB = valuesB[filledGamesCount - 2];
 
-                    let trendA = '';
-                    if (lastA < secondLastA) trendA = 'A↓'; 
-                    else if (lastA > secondLastA) trendA = 'A↑'; 
-                    else trendA = 'A='; 
+                    let trendA = \'\';
+                    if (lastA < secondLastA) trendA = \'A↓\'; 
+                    else if (lastA > secondLastA) trendA = \'A↑\'; 
+                    else trendA = \'A=\'; 
 
-                    let trendB = '';
-                    if (lastB < secondLastB) trendB = 'B↓';
-                    else if (lastB > secondLastB) trendB = 'B↑';
-                    else trendB = 'B=';
+                    let trendB = \'\';
+                    if (lastB < secondLastB) trendB = \'B↓\';
+                    else if (lastB > secondLastB) trendB = \'B↑\';
+                    else trendB = \'B=\';
 
                     trend = `${trendA} ${trendB}.`;
 
@@ -518,16 +518,16 @@
                     const diffBefore = Math.abs(secondLastA - secondLastB);
 
                     if (diffNow < diffBefore) {
-                        trend += ' Сближение.';
+                        trend += \' Сближение.\';
                     } else if (diffNow > diffBefore) {
-                        trend += ' Расхождение.';
+                        trend += \' Расхождение.\';
                     } else {
-                        trend += ' Параллельно.';
+                        trend += \' Параллельно.\';
                     }
                 }
                 trendAnalysisSpan.innerHTML = trend;
 
-                let firstIntersectionGame = 'Нет';
+                let firstIntersectionGame = \'Нет\';
                 // Теперь мы ищем первое пересечение в целом, а не для волнового анализа
                 for (let i = 0; i < filledGamesCount; i++) {
                     if (!isNaN(valuesA[i]) && !isNaN(valuesB[i])) {
@@ -535,63 +535,23 @@
                              const prevDiff = valuesA[i-1] - valuesB[i-1];
                              const currentDiffVal = valuesA[i] - valuesB[i];
                              if ((prevDiff * currentDiffVal < 0) || (prevDiff === 0 && currentDiffVal !== 0)) { 
-                                 if (firstIntersectionGame === 'Нет') { 
-                                     firstIntersectionGame = `Гейм ${i + 1}`;
-                                 }
-                             }
-                        }
-                    }
-                }
-                if (firstIntersectionGame === 'Нет' && filledGamesCount > 0) {
-                     firstIntersectionGame = 'Не найдено.';
-                }
-                firstIntersectionPointSpan.textContent = firstIntersectionGame;
-
-                let wavePrediction = 'Нет данных.';
-                let potentialLeader = 'Нет данных.';
-                const GAME_THRESHOLD = 8; 
-
-                // *** Изменение здесь: initialWavePoint теперь последний заполненный гейм ***
-                if (filledGamesCount > 0) {
-                    const initialWavePoint = filledGamesCount; 
-                    
-                    const nextWaveRangeStart = initialWavePoint + 3;
-                    const nextWaveRangeEnd = initialWavePoint + 4;
-                    
-                    const thirdWaveRangeStart = initialWavePoint + 6;
-                    const thirdWaveRangeEnd = initialWavePoint + 8;
-
-                    let waveMsgParts = [];
-                    // Первую точку теперь не указываем, т.к. это "текущий гейм"
-                    
-                    let nextWaveStatus = '';
-                    if (nextWaveRangeEnd <= GAME_THRESHOLD) {
-                        nextWaveStatus = `Сл: ${nextWaveRangeStart}-${nextWaveRangeEnd}.`;
-                    } else if (nextWaveRangeStart <= GAME_THRESHOLD && nextWaveRangeEnd > GAME_THRESHOLD) {
-                        nextWaveStatus = `Сл: ${nextWaveRangeStart}-${GAME_THRESHOLD}+ (за счетом).`;
-                    } else {
-                        nextWaveStatus = `Сл: За счетом.`;
-                    }
-                    waveMsgParts.push(nextWaveStatus);
-
-                    let thirdWaveStatus = '';
-                    if (thirdWaveRangeEnd <= GAME_THRESHOLD) {
-                        thirdWaveStatus = `Тре: ${thirdWaveRangeStart}-${thirdWaveRangeEnd}.`;
-                    } else if (thirdWaveRangeStart <= GAME_THRESHOLD && thirdWaveRangeEnd > GAME_THRESHOLD) {
-                        thirdWaveStatus = `Тре: ${thirdWaveRangeStart}-${GAME_THRESHOLD}+ (за счетом).`;
-                    } else {
-                        thirdWaveStatus = `Тре: За счетом.`;
-                    }
-                    waveMsgParts.push(thirdWaveStatus);
-                    
-                    wavePrediction = waveMsgParts.join(' ');
-+
-+
-                    if (parseFloat(avgA) < parseFloat(avgB)) {
-                        potentialLeader = "Игрок A";
-                    } else if (parseFloat(avgB) < parseFloat(avgA)) {
-@@ -819,6 +819,7 @@
+                                 if (firstIntersectionGame === \'Нет\') { 
+                                     firstIntersectionGame = `Гейм ${i + 1}`;\n
+                                 }\n
+                             }\n
+                         }\n
+                     }\n
+                 }\n
+                 if (firstIntersectionGame === \'Нет\' && filledGamesCount > 0) {\n
+                      firstIntersectionGame = \'Не найдено.\';\n
+                 }\n
+                 firstIntersectionPointSpan.textContent = firstIntersectionGame;\n
+@@ -716,7 +717,7 @@
+                     };
  
+                     let value = activeInput.value;
+                     const parts = value.split(\',\');
+@@ -776,4 +777,5 @@
          });
      </script>
 +
