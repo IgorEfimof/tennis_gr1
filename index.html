@@ -349,16 +349,6 @@
                     <input type="text" inputmode="none" placeholder="Коэф. A" data-player="a" data-id="8" maxlength="5" readonly>
                     <input type="text" inputmode="none" placeholder="Коэф. B" data-player="b" data-id="8" maxlength="5" readonly>
                 </div>
-                <div class="game-input">
-                    <p><strong>Гейм 9</strong></p>
-                    <input type="text" inputmode="none" placeholder="Коэф. A" data-player="a" data-id="9" maxlength="5" readonly>
-                    <input type="text" inputmode="none" placeholder="Коэф. B" data-player="b" data-id="9" maxlength="5" readonly>
-                </div>
-                <div class="game-input">
-                    <p><strong>Гейм 10</strong></p>
-                    <input type="text" inputmode="none" placeholder="Коэф. A" data-player="a" data-id="10" maxlength="5" readonly>
-                    <input type="text" inputmode="none" placeholder="Коэф. B" data-player="b" data-id="10" maxlength="5" readonly>
-                </div>
             </div>
             <button id="clearBtn">Очистить данные</button>
             <div id="result" class="result hidden">
@@ -393,7 +383,7 @@
         // Это самое надежное решение для iPad.
         
         document.addEventListener("DOMContentLoaded", () => {
-            const gameCount = 10; 
+            const gameCount = 8; 
             const clearBtn = document.getElementById("clearBtn");
             const resultDiv = document.getElementById("result");
             const avgASpan = document.getElementById("avgA");
@@ -559,7 +549,7 @@
 
                 let wavePrediction = 'Нет данных.';
                 let potentialLeader = 'Нет данных.';
-                const GAME_THRESHOLD = 10; 
+                const GAME_THRESHOLD = 8; 
 
                 // *** Изменение здесь: initialWavePoint теперь последний заполненный гейм ***
                 if (filledGamesCount > 0) {
@@ -595,230 +585,15 @@
                     waveMsgParts.push(thirdWaveStatus);
                     
                     wavePrediction = waveMsgParts.join(' ');
-
-
++
++
                     if (parseFloat(avgA) < parseFloat(avgB)) {
                         potentialLeader = "Игрок A";
                     } else if (parseFloat(avgB) < parseFloat(avgA)) {
-                        potentialLeader = "Игрок B";
-                    } else {
-                        potentialLeader = "Равны";
-                    }
-
-                    const isNextWaveBeyondScore = (nextWaveRangeEnd > GAME_THRESHOLD);
-                    const isThirdWaveBeyondScore = (thirdWaveRangeStart > GAME_THRESHOLD); 
-
-                    if (isNextWaveBeyondScore || isThirdWaveBeyondScore) {
-                        potentialLeader += " (волны вероятно за счетом).";
-                    } else {
-                        potentialLeader += " (волны в пределах счета).";
-                    }
-                }
-                
-                wavePredictionSpan.textContent = wavePrediction;
-                potentialLeaderSpan.textContent = potentialLeader;
-
-
-                resultDiv.classList.remove("hidden");
-
-                if (chartInstance) {
-                    chartInstance.data.labels = labels;
-                    chartInstance.data.datasets[0].data = dataA;
-                    chartInstance.data.datasets[1].data = dataB;
-                    chartInstance.update();
-                } else {
-                    const ctx = chartCanvas.getContext('2d');
-                    chartInstance = new Chart(ctx, {
-                        type: 'line',
-                        data: {
-                            labels: labels,
-                            datasets: [
-                                {
-                                    label: 'Коэф. A', 
-                                    data: dataA,
-                                    borderColor: '#4f46e5', 
-                                    backgroundColor: 'rgba(79, 70, 229, 0.2)',
-                                    tension: 0.2,
-                                    pointBackgroundColor: '#4f46e5',
-                                    pointBorderColor: '#fff',
-                                    pointHoverBackgroundColor: '#fff',
-                                    pointHoverBorderColor: '#4f46e5',
-                                    fill: false
-                                },
-                                {
-                                    label: 'Коэф. B', 
-                                    data: dataB,
-                                    borderColor: '#ef4444', 
-                                    backgroundColor: 'rgba(239, 68, 68, 0.2)',
-                                    tension: 0.2,
-                                    pointBackgroundColor: '#ef4444',
-                                    pointBorderColor: '#fff',
-                                    pointHoverBackgroundColor: '#fff',
-                                    pointHoverBorderColor: '#ef4444',
-                                    fill: false
-                                }
-                            ]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            scales: {
-                                x: {
-                                    title: {
-                                        display: true,
-                                        text: 'Гейм',
-                                        color: 'white'
-                                    },
-                                    grid: {
-                                        color: '#333'
-                                    },
-                                    ticks: {
-                                        color: 'white',
-                                        font: {
-                                            size: 10 
-                                        }
-                                    }
-                                },
-                                y: {
-                                    beginAtZero: false,
-                                    title: {
-                                        display: true,
-                                        text: 'Коэф.', 
-                                        color: 'white'
-                                    },
-                                    grid: {
-                                        color: '#333'
-                                    },
-                                    ticks: {
-                                        color: 'white',
-                                        font: {
-                                            size: 10 
-                                        }
-                                    }
-                                }
-                            },
-                            plugins: {
-                                legend: {
-                                    labels: {
-                                        color: 'white',
-                                        font: {
-                                            size: 10 
-                                        },
-                                        boxWidth: 15, 
-                                        padding: 5 
-                                    }
-                                }
-                            }
-                        }
-                    });
-                }
-            };
-
-            inputs.forEach((input) => {
-                input.setAttribute('inputmode', 'none');
-                input.setAttribute('readonly', 'readonly');
-                input.setAttribute('autocomplete', 'off');
-
-                input.addEventListener("focus", () => {
-                    activeInput = input;
-                    customKeyboard.classList.add("visible");
-                    document.body.classList.add("keyboard-active");
-                    setTimeout(() => {
-                        activeInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    }, 300);
-                });
-
-                input.addEventListener("click", (e) => {
-                    e.preventDefault();
-                    activeInput = input;
-                    customKeyboard.classList.add("visible");
-                    document.body.classList.add("keyboard-active");
-                    activeInput.focus();
-                });
-            });
-
-            keyboardButtons.forEach(button => {
-                button.addEventListener("click", (e) => {
-                    e.preventDefault();
-                    if (!activeInput) return;
-
-                    const key = button.dataset.key;
-                    let currentValue = activeInput.value;
-
-                    if (key === "delete") {
-                        activeInput.value = currentValue.slice(0, -1);
-                        performAnalysis(); 
-                    } else if (key === ".") {
-                        if (!currentValue.includes(',')) {
-                            if (currentValue.length === 0) {
-                                activeInput.value = "0,";
-                            } else if (/^\d+$/.test(currentValue)) { 
-                                activeInput.value = currentValue + ",";
-                            }
-                        }
-                    } else { 
-                        if (!currentValue.includes(',')) {
-                            if (currentValue.length === 0) {
-                                activeInput.value = key; 
-                            } else if (currentValue.length === 1 && !isNaN(parseInt(currentValue))) { 
-                                activeInput.value = currentValue + ',' + key;
-                            } else if (currentValue.length < 5) { 
-                                activeInput.value += key;
-                            }
-                        } else { 
-                            const parts = currentValue.split(',');
-                            if (parts[1].length < 2) {
-                                activeInput.value += key;
-                            }
-                        }
-                    }
-
-                    let value = activeInput.value;
-                    const parts = value.split(',');
-
-                    if (parts.length === 2 && parts[1].length === 2) {
-                        const currentIndex = Array.from(inputs).indexOf(activeInput);
-                        const nextInput = inputs[currentIndex + 1];
-
-                        if (nextInput) {
-                            nextInput.focus(); 
-                        } else {
-                            if (activeInput === lastInput) {
-                                hideKeyboard(); 
-                            }
-                        }
-                    }
-                    performAnalysis();
-                });
-            });
-
-            clearBtn.addEventListener("click", () => {
-                inputs.forEach(input => {
-                    input.value = ""; 
-                });
-                resultDiv.classList.add("hidden"); 
-                hideKeyboard(); 
-                if (chartInstance) { 
-                    chartInstance.data.labels = [];
-                    chartInstance.data.datasets.forEach(dataset => dataset.data = []);
-                    chartInstance.update();
-                }
-                if (inputs.length > 0) {
-                    inputs[0].focus(); 
-                }
-            });
-
-            // Add this event listener to the document body
-            document.body.addEventListener("click", (event) => {
-                if (!activeInput) return; // If no input is active, do nothing
-
-                const target = event.target;
-                // Check if the click target is NOT an input field and NOT inside the custom keyboard
-                if (target !== activeInput && !customKeyboard.contains(target)) {
-                    hideKeyboard();
-                }
-            });
-        });
-    </script>
-</body>
-</html>
+@@ -819,6 +819,7 @@
+ 
+         });
+     </script>
++
+ </body>
+ </html>
